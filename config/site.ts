@@ -1,0 +1,56 @@
+export const siteConfig = {
+  name: "1 Stop Pest Control LLC",
+  description:
+    "Premier pest control service in Albany Capital Region. Specializing in heat treatment for bedbugs and offering both residential and commercial pest control services.",
+  url: "https://www.1stoppestcontrolllc.com",
+  logo: {
+    main: "/images/1stop-logo.png",
+    alt: "1 Stop Pest Control LLC Logo",
+  },
+  contact: {
+    phone: "518-728-5589",
+    email: "info@1stoppestcontrolllc.com",
+    address: "Rensselaer, NY",
+    region: "Albany Capital Region",
+  },
+  links: {
+    facebook: "https://facebook.com",
+    instagram: "https://instagram.com",
+    twitter: "https://twitter.com",
+  },
+  services: {
+    residential: [
+      "Bed Bug Heat Treatment",
+      "General Pest Control",
+      "Rodent Control",
+      "Stinging Insect Control",
+      "Emergency Services",
+    ],
+    commercial: [
+      "Integrated Pest Management (IPM)",
+      "Routine Maintenance Programs",
+      "Emergency Pest Control",
+      "Bed Bug Heat Treatment",
+      "Bird Control & Exclusion",
+      "Rodent Control Programs",
+    ],
+  },
+  serviceAreas: [
+    "Albany",
+    "Rensselaer",
+    "Troy",
+    "Schenectady",
+    "Colonie",
+    "Clifton Park",
+    "Latham",
+    "Delmar",
+    "Guilderland",
+    "East Greenbush",
+    "Cohoes",
+    "Watervliet",
+    "Saratoga Springs",
+    "Ballston Spa",
+    "Malta",
+    "Glenville",
+  ],
+}
