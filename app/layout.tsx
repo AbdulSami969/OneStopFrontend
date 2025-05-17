@@ -1,31 +1,29 @@
-import type React from "react"
-import type { Metadata } from "next"
-import { Inter, Oswald } from "next/font/google"
-import "./globals.css"
-import Header from "@/components/header"
-import Footer from "@/components/footer"
-import MobileToolkit from "@/components/mobile-toolkit"
-import ContactModal from "@/components/contact-modal"
-import { ThemeProvider } from "@/components/theme-provider"
-import DesktopToolkit from "@/components/desktop-toolkit"
-import Script from "next/script"
+import type React from "react";
+import type { Metadata } from "next";
+import { Inter, Oswald } from "next/font/google";
+import "./globals.css";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
+import MobileToolkit from "@/components/mobile-toolkit";
+import ContactModal from "@/components/contact-modal";
+import { ThemeProvider } from "@/components/theme-provider";
+import DesktopToolkit from "@/components/desktop-toolkit";
+import Script from "next/script";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
-const oswald = Oswald({ subsets: ["latin"], variable: "--font-oswald" })
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const oswald = Oswald({ subsets: ["latin"], variable: "--font-oswald" });
 
 export const metadata: Metadata = {
   title: "1 Stop Pest Control LLC | Albany Capital Region",
-  description:
-    "Premier pest control service in Albany Capital Region. Specializing in heat treatment for bedbugs and offering both residential and commercial pest control services.",
-  keywords:
-    "pest control, Albany, bed bugs, heat treatment, residential pest control, commercial pest control, exterminator",
-    generator: 'v0.dev'
-}
+  description: "Premier pest control service in Albany Capital Region. Specializing in heat treatment for bedbugs and offering both residential and commercial pest control services.",
+  keywords: "pest control, Albany, bed bugs, heat treatment, residential pest control, commercial pest control, exterminator",
+  generator: "v0.dev",
+};
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
@@ -90,5 +88,5 @@ export default function RootLayout({
         </ThemeProvider>
       </body>
     </html>
-  )
+  );
 }

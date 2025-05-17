@@ -1,18 +1,14 @@
-import createImageUrlBuilder from "@sanity/image-url";
-import type { Image } from "sanity";
+import { client } from "./sanity.client";
+import imageUrlBuilder from "@sanity/image-url";
 
-const projectId = "s6dg2z72";
-const dataset = "production";
+// Set up the image URL builder
+const builder = imageUrlBuilder(client);
 
-const imageBuilder = createImageUrlBuilder({
-  projectId: projectId || "",
-  dataset: dataset || "",
-});
+// Helper function to get image URL for a Sanity image asset
+export function urlForImage(source: any) {
+  // Return empty string if source is not provided
+  if (!source) return "";
 
-export const urlForImage = (source: Image) => {
-  if (!source?.asset?._ref) {
-    return "";
-  }
-
-  return imageBuilder?.image(source).auto("format").fit("max");
-};
+  // Return the image URL if source is provided
+  return builder.image(source);
+}

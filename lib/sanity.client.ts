@@ -2,95 +2,22 @@ import { createClient } from "next-sanity";
 
 const projectId = "s6dg2z72";
 const dataset = "production";
-const apiVersion = "2022-03-25";
+const apiVersion = "2023-05-03";
 
+// Create Sanity client to be used across the application
 export const client = createClient({
   projectId,
   dataset,
   apiVersion,
-  useCdn: false, // Set to true for production
+  useCdn: true,
+  perspective: "published",
 });
 
-// Fetch all services
-export async function getServices() {
-  return client.fetch(
-    `*[_type == "service"] | order(title asc) {
-      title,
-      slug,
-      featured,
-      heroSection {
-        heroImage,
-        headline,
-        description
-      }
-    }`
-  );
-}
-
-// Fetch a single service by slug
-export async function getService(slug: string) {
-  return client.fetch(
-    `*[_type == "service" && slug.current == $slug][0] {
-      title,
-      slug,
-      heroSection {
-        heroImage,
-        headline,
-        description
-      },
-      benefitsSection {
-        title,
-        description,
-        benefits[] {
-          icon,
-          title,
-          description
-        },
-        ctaButton {
-          text,
-          path
-        },
-        featuredImage,
-        statCallout {
-          icon,
-          statNumber,
-          statDescription
-        }
-      },
-      processSection {
-        title,
-        steps[] {
-          stepNumber,
-          title,
-          description
-        }
-      },
-      ctaSection {
-        icon,
-        title,
-        description,
-        button {
-          text,
-          path
-        }
-      },
-      seo
-    }`,
-    { slug }
-  );
-}
-
-// Fetch featured services
-export async function getFeaturedServices() {
-  return client.fetch(
-    `*[_type == "service" && featured == true] | order(title asc)[0...3] {
-      title,
-      slug,
-      heroSection {
-        heroImage,
-        headline,
-        description
-      }
-    }`
-  );
-}
+// Create a separate client for write operations with a token
+export const writeClient = createClient({
+  projectId,
+  dataset,
+  apiVersion,
+  token: "skMZD8bY5Uu13HXOkL1AqnEjw2JESpsL1KNSRwHIGHoYen02n12XeSRGAj7VieYrbxSl9UAoClEmdvgy6mMte4EhUjyLbmykwEAHcMPPC9OCy8xZ3JTgMyVsdKmSVEVPeGojYN2VRGxEz1ZTq21D5sidmTG6kCX58MrM9X12zha2b02L9SOL",
+  useCdn: false, // Don't use CDN for write operations
+});

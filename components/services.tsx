@@ -2,50 +2,83 @@ import { Building, Home, Thermometer, Clock, BugOff, Shield } from "lucide-react
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
 import Image from "next/image";
+import { urlForImage } from "@/lib/sanity.image";
 
-const services = [
-  {
-    title: "Heat Treatment",
-    description: "Our specialty! Eco-friendly bedbug elimination using advanced heat treatment technology.",
-    icon: Thermometer,
-    image: "/images/heat-treatment.png",
-    link: "/residential",
-  },
-  {
-    title: "Residential Pest Control",
-    description: "Comprehensive pest management solutions for your home.",
-    icon: Home,
-    image: "/images/residential-service.png",
-    link: "/residential",
-  },
-  {
-    title: "Commercial Pest Control",
-    description: "Tailored pest control programs for businesses of all sizes.",
-    icon: Building,
-    image: "/images/commercial-service.png",
-    link: "/commercial",
-  },
-  {
-    title: "Emergency Services",
-    description: "Fast response for urgent pest problems.",
-    icon: Clock,
-    link: "/emergency",
-  },
-  {
-    title: "Pest Identification",
-    description: "Expert identification and targeted treatment plans.",
-    icon: BugOff,
-    link: "/pest-identification",
-  },
-  {
-    title: "Preventative Programs",
-    description: "Ongoing protection to keep pests away year-round.",
-    icon: Shield,
-    link: "/preventative-programs",
-  },
-];
+// Define props type
+type ServicesProps = {
+  data?: any;
+};
 
-export default function Services() {
+export default function Services({ data }: ServicesProps = {}) {
+  // Use data from Sanity if available, otherwise use default data
+  const title = data?.title || "Our Services";
+  const description = data?.description || "1 Stop Pest Control offers comprehensive pest management solutions for both residential and commercial properties in the Albany Capital Region.";
+
+  // If we have services from Sanity, use those
+  const servicesData = data?.services || [
+    {
+      title: "Heat Treatment",
+      description: "Our specialty! Eco-friendly bedbug elimination using advanced heat treatment technology.",
+      icon: Thermometer,
+      image: "/images/heat-treatment.png",
+      link: "/residential",
+    },
+    {
+      title: "Residential Pest Control",
+      description: "Comprehensive pest management solutions for your home.",
+      icon: Home,
+      image: "/images/residential-service.png",
+      link: "/residential",
+    },
+    {
+      title: "Commercial Pest Control",
+      description: "Tailored pest control programs for businesses of all sizes.",
+      icon: Building,
+      image: "/images/commercial-service.png",
+      link: "/commercial",
+    },
+    {
+      title: "Emergency Services",
+      description: "Fast response for urgent pest problems.",
+      icon: Clock,
+      link: "/emergency",
+    },
+    {
+      title: "Pest Identification",
+      description: "Expert identification and targeted treatment plans.",
+      icon: BugOff,
+      link: "/pest-identification",
+    },
+    {
+      title: "Preventative Programs",
+      description: "Ongoing protection to keep pests away year-round.",
+      icon: Shield,
+      link: "/preventative-programs",
+    },
+  ];
+
+  // Map Sanity services to component format if available
+  const services = data?.services?.length
+    ? data.services.map((service: any) => ({
+        title: service.title,
+        description: service.heroSection?.description || "",
+        image: service.imageUrl,
+        link: `/services/${service.slug?.current}`,
+        icon: getIconByTitle(service.title),
+      }))
+    : servicesData;
+
+  // Helper function to get an icon based on service title
+  function getIconByTitle(title: string) {
+    if (title.toLowerCase().includes("heat")) return Thermometer;
+    if (title.toLowerCase().includes("residential")) return Home;
+    if (title.toLowerCase().includes("commercial")) return Building;
+    if (title.toLowerCase().includes("emergency")) return Clock;
+    if (title.toLowerCase().includes("identification")) return BugOff;
+    if (title.toLowerCase().includes("prevent")) return Shield;
+    return BugOff; // Default icon
+  }
+
   return (
     <section className="py-10 md:py-16 bg-gray-light relative">
       <div className="absolute top-0 right-0 opacity-10 pointer-events-none">
@@ -57,14 +90,14 @@ export default function Services() {
       <div className="container mx-auto px-4 md:px-6 lg:px-8">
         <div className="flex items-center justify-center mb-6 md:mb-8">
           <div className="h-0.5 bg-pest-red w-8 md:w-12 mr-3 md:mr-4"></div>
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-center">Our Services</h2>
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-center">{title}</h2>
           <div className="h-0.5 bg-pest-red w-8 md:w-12 ml-3 md:ml-4"></div>
         </div>
 
-        <p className="text-center text-base md:text-lg mb-8 md:mb-12 max-w-3xl mx-auto">1 Stop Pest Control offers comprehensive pest management solutions for both residential and commercial properties in the Albany Capital Region.</p>
+        <p className="text-center text-base md:text-lg mb-8 md:mb-12 max-w-3xl mx-auto">{description}</p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
-          {services.map((service, index) => {
+          {services.map((service: any, index: number) => {
             const ServiceIcon = service.icon;
             const isPrevProgram = service.title === "Preventative Programs";
 

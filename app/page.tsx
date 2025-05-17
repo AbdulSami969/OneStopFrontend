@@ -1,21 +1,25 @@
-import Hero from "@/components/hero"
-import Services from "@/components/services"
-import WhyChooseUs from "@/components/why-choose-us"
-import CTASection from "@/components/cta-section"
-import PestGallery from "@/components/pest-gallery"
-import ServiceAreas from "@/components/service-areas"
-import StaticTestimonials from "@/components/static-testimonials"
+import Hero from "@/components/hero";
+import Services from "@/components/services";
+import WhyChooseUs from "@/components/why-choose-us";
+import CTASection from "@/components/cta-section";
+import PestGallery from "@/components/pest-gallery";
+import ServiceAreas from "@/components/service-areas";
+import StaticTestimonials from "@/components/static-testimonials";
+import { getHomepage } from "@/lib/queries/homepage";
 
-export default function Home() {
+export default async function Home() {
+  // Fetch data from Sanity
+  const homepage = await getHomepage();
+
   return (
     <>
-      <Hero key="hero-section" />
-      <Services key="services-section" />
-      <WhyChooseUs key="why-choose-us-section" />
-      <PestGallery key="pest-gallery-section" />
-      <StaticTestimonials key="testimonials-section" />
-      <ServiceAreas key="service-areas-section" />
-      <CTASection key="cta-section" />
+      <Hero data={homepage?.heroSection} key="hero-section" />
+      <Services data={homepage?.servicesSection} key="services-section" />
+      <WhyChooseUs data={homepage?.whyChooseUsSection} key="why-choose-us-section" />
+      <PestGallery data={homepage?.pestGallerySection} key="pest-gallery-section" />
+      <StaticTestimonials data={homepage?.testimonialsSection} key="testimonials-section" />
+      <ServiceAreas data={homepage?.serviceAreasSection} key="service-areas-section" />
+      <CTASection data={homepage?.ctaSection} key="cta-section" />
     </>
-  )
+  );
 }

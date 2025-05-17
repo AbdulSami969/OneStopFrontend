@@ -5,23 +5,61 @@ import Link from "next/link";
 import Image from "next/image";
 import { Menu, X, Phone } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { getHeaderData } from "@/lib/queries/header";
+import { urlForImage } from "@/lib/sanity.image";
 
-const topNavigation = [
-  { name: "Where We Service", href: "/service-areas" },
-  { name: "Contact", href: "/contact" },
-];
+// Types for header data
+interface NavItem {
+  name: string;
+  href: string;
+}
 
-const mainNavigation = [
-  { name: "Home", href: "/" },
-  { name: "About Us", href: "/about" },
-  { name: "Services", href: "/services" },
-  { name: "Commercial", href: "/commercial" },
-  { name: "Pest Research", href: "/pest-library" },
-];
+interface PhoneInfo {
+  displayText: string;
+  phoneNumber: string;
+  phoneLink: string;
+}
 
-export default function Header() {
+interface ButtonInfo {
+  text: string;
+  href: string;
+}
+
+interface HeaderData {
+  logo?: any;
+  phoneInfo: PhoneInfo;
+  topNavigation: NavItem[];
+  mainNavigation: NavItem[];
+  requestServiceButton: ButtonInfo;
+}
+
+// This component handles the client-side functionality, while getting data from props
+function HeaderClient({ headerData }: { headerData: HeaderData }) {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+
+  // Fallback values if Sanity data is not available
+  const logoUrl = headerData?.logo ? urlForImage(headerData.logo).toString() : "/images/logo-u661-1.png";
+  const phoneInfo = headerData?.phoneInfo || {
+    displayText: "CALL US TODAY!",
+    phoneNumber: "518-728-5589",
+    phoneLink: "tel:5187285589",
+  };
+  const topNavigation = headerData?.topNavigation || [
+    { name: "Where We Service", href: "/service-areas" },
+    { name: "Contact", href: "/contact" },
+  ];
+  const mainNavigation = headerData?.mainNavigation || [
+    { name: "Home", href: "/" },
+    { name: "About Us", href: "/about" },
+    { name: "Services", href: "/services" },
+    { name: "Commercial", href: "/commercial" },
+    { name: "Pest Research", href: "/pest-library" },
+  ];
+  const requestButton = headerData?.requestServiceButton || {
+    text: "REQUEST SERVICE",
+    href: "/contact",
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -35,6 +73,22 @@ export default function Header() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    e.currentTarget.style.display = "none";
+    const parent = e.currentTarget.parentElement;
+    if (parent) {
+      parent.innerHTML = '<span class="text-xl font-bold text-pest-red">1 Stop Pest Control</span>';
+    }
+  };
+
+  const handleMobileImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    e.currentTarget.style.display = "none";
+    const parent = e.currentTarget.parentElement;
+    if (parent) {
+      parent.innerHTML = '<span class="text-lg font-bold text-pest-red">1 Stop Pest</span>';
+    }
+  };
 
   return (
     <header className={cn("sticky top-0 z-40 w-full transition-all duration-200", scrolled ? "bg-white shadow-md" : "bg-white")}>
@@ -50,9 +104,9 @@ export default function Header() {
               ))}
             </div>
             <div className="flex items-center">
-              <span className="font-bold text-gray-800 mr-2">CALL US TODAY!</span>
-              <a href="tel:5187285589" className="text-xl font-bold text-pest-red hover:text-pest-red/80 transition-colors">
-                518-728-5589
+              <span className="font-bold text-gray-800 mr-2">{phoneInfo.displayText}</span>
+              <a href={phoneInfo.phoneLink} className="text-xl font-bold text-pest-red hover:text-pest-red/80 transition-colors">
+                {phoneInfo.phoneNumber}
               </a>
             </div>
           </div>
@@ -65,21 +119,7 @@ export default function Header() {
           {/* Logo */}
           <div className="flex-shrink-0">
             <Link href="/" className="flex items-center">
-              <Image
-                src="/images/logo-u661-1.png"
-                alt="1 Stop Pest Control LLC"
-                width={220}
-                height={80}
-                className="h-16 w-auto"
-                priority
-                onError={(e) => {
-                  // Fallback to text if image fails to load
-                  e.currentTarget.style.display = "none";
-                  if (e.currentTarget.parentElement) {
-                    e.currentTarget.parentElement.innerHTML = '<span class="text-xl font-bold text-pest-red">1 Stop Pest Control</span>';
-                  }
-                }}
-              />
+              <Image src={logoUrl} alt="1 Stop Pest Control LLC" width={220} height={80} className="h-16 w-auto" priority onError={handleImageError} />
             </Link>
           </div>
 
@@ -94,8 +134,8 @@ export default function Header() {
 
           {/* Request Service Button (Desktop) */}
           <div>
-            <Link href="/contact" className="inline-flex items-center bg-pest-red text-white px-8 py-3 rounded-full font-bold hover:bg-pest-red/90 transition-colors">
-              REQUEST SERVICE
+            <Link href={requestButton.href} className="inline-flex items-center bg-pest-red text-white px-8 py-3 rounded-full font-bold hover:bg-pest-red/90 transition-colors">
+              {requestButton.text}
               <svg className="ml-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
               </svg>
@@ -115,26 +155,12 @@ export default function Header() {
         {/* Center: Logo */}
         <div className="flex justify-center">
           <Link href="/" className="flex items-center">
-            <Image
-              src="/images/logo-u661-1.png"
-              alt="1 Stop Pest Control LLC"
-              width={150}
-              height={60}
-              className="h-12 w-auto"
-              priority
-              onError={(e) => {
-                // Fallback to text if image fails to load
-                e.currentTarget.style.display = "none";
-                if (e.currentTarget.parentElement) {
-                  e.currentTarget.parentElement.innerHTML = '<span class="text-lg font-bold text-pest-red">1 Stop Pest</span>';
-                }
-              }}
-            />
+            <Image src={logoUrl} alt="1 Stop Pest Control LLC" width={150} height={60} className="h-12 w-auto" priority onError={handleMobileImageError} />
           </Link>
         </div>
 
         {/* Right: Phone Button */}
-        <a href="tel:5187285589" className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-pest-red text-white" aria-label="Call us">
+        <a href={phoneInfo.phoneLink} className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-pest-red text-white" aria-label="Call us">
           <Phone className="h-5 w-5" />
         </a>
       </div>
@@ -148,12 +174,21 @@ export default function Header() {
             </Link>
           ))}
           <div className="mt-4 px-3 py-2">
-            <Link href="/contact" className="block w-full text-center bg-pest-red text-white px-4 py-2 rounded-full font-bold hover:bg-pest-red/90 transition-colors" onClick={() => setIsOpen(false)}>
-              REQUEST SERVICE
+            <Link href={requestButton.href} className="block w-full text-center bg-pest-red text-white px-4 py-2 rounded-full font-bold hover:bg-pest-red/90 transition-colors" onClick={() => setIsOpen(false)}>
+              {requestButton.text}
             </Link>
           </div>
         </div>
       </div>
     </header>
   );
+}
+
+// Server component that fetches data and passes it to client component
+export default async function Header() {
+  // Fetch header data from Sanity
+  const headerData = await getHeaderData();
+
+  // Render the client component with data
+  return <HeaderClient headerData={headerData || {}} />;
 }

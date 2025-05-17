@@ -22,6 +22,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "../Pest-sanity/schemaTypes/faq.ts", "../Pest-sanity/schemaTypes/testimonial.ts", "../Pest-sanity/schemaTypes/servicesPage.ts", "../Pest-sanity/schemaTypes/pest.ts"],
   "exclude": ["node_modules"]
 }
