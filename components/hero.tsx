@@ -14,7 +14,6 @@ type HeroProps = {
 
 export default function Hero({ data }: HeroProps = {}) {
   // If we have data from Sanity, use it, otherwise fall back to default values
-  console.log("data", data);
   const title = data?.title || "Albany's Premier Pest Control Service";
   const description = data?.description || "Specializing in heat treatment for bedbugs and comprehensive pest control solutions.";
   const buttonText = data?.ctaButton?.text || "Get a Free Quote";
@@ -23,7 +22,7 @@ export default function Hero({ data }: HeroProps = {}) {
   const logoUrl = data?.logoImageUrl || "/images/1stop-logo.png";
 
   return (
-    <section className="relative bg-cover bg-center min-h-[500px] md:min-h-[600px] h-[calc(100vh-55px)] md:h-auto h-full md:h-auto flex flex-col justify-center" style={{ backgroundImage: `url('${backgroundImage}')` }}>
+    <section className="relative bg-cover bg-center  h-[calc(100vh-55px)] md:h-auto h-full md:h-auto flex flex-col justify-center" style={{ backgroundImage: `url('${backgroundImage}')` }}>
       <div className="absolute inset-0 bg-black/70"></div>
       <div className="container mx-auto px-4 md:px-6 lg:px-8 relative z-10 py-12 md:py-24 lg:py-32">
         <div className="max-w-4xl mx-auto text-center text-white">
