@@ -104,53 +104,64 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Mobile Header - New 3-column Layout */}
-      <div className="lg:hidden flex items-center justify-between px-4 py-3">
-        {/* Left: Menu Button */}
-        <button type="button" className="inline-flex items-center justify-center p-2 rounded-md text-gray-800" onClick={() => setIsOpen(!isOpen)}>
-          <span className="sr-only">{isOpen ? "Close menu" : "Open menu"}</span>
-          {isOpen ? <X className="block h-6 w-6" aria-hidden="true" /> : <Menu className="block h-6 w-6" aria-hidden="true" />}
-        </button>
+      {/* Mobile Header - Fixed overlay */}
+      <div className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md">
+        <div className="flex items-center justify-between px-4 py-3">
+          {/* Left: Menu Button */}
+          <button type="button" className="inline-flex items-center justify-center p-2 rounded-md text-gray-800" onClick={() => setIsOpen(!isOpen)}>
+            <span className="sr-only">{isOpen ? "Close menu" : "Open menu"}</span>
+            {isOpen ? <X className="block h-6 w-6" aria-hidden="true" /> : <Menu className="block h-6 w-6" aria-hidden="true" />}
+          </button>
 
-        {/* Center: Logo */}
-        <div className="flex justify-center">
-          <Link href="/" className="flex items-center">
-            <Image
-              src="/images/logo-u661-1.png"
-              alt="1 Stop Pest Control LLC"
-              width={150}
-              height={60}
-              className="h-12 w-auto"
-              priority
-              onError={(e) => {
-                // Fallback to text if image fails to load
-                e.currentTarget.style.display = "none";
-                if (e.currentTarget.parentElement) {
-                  e.currentTarget.parentElement.innerHTML = '<span class="text-lg font-bold text-pest-red">1 Stop Pest</span>';
-                }
-              }}
-            />
-          </Link>
+          {/* Center: Logo */}
+          <div className="flex justify-center">
+            <Link href="/" className="flex items-center">
+              <Image
+                src="/images/logo-u661-1.png"
+                alt="1 Stop Pest Control LLC"
+                width={150}
+                height={60}
+                className="h-16 w-auto"
+                priority
+                onError={(e) => {
+                  // Fallback to text if image fails to load
+                  e.currentTarget.style.display = "none";
+                  if (e.currentTarget.parentElement) {
+                    e.currentTarget.parentElement.innerHTML = '<span class="text-lg font-bold text-pest-red">1 Stop Pest</span>';
+                  }
+                }}
+              />
+            </Link>
+          </div>
+
+          {/* Right: Phone Button */}
+          <a href="tel:5187285589" className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-pest-red text-white" aria-label="Call us">
+            <Phone className="h-5 w-5" />
+          </a>
         </div>
 
-        {/* Right: Phone Button */}
-        <a href="tel:5187285589" className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-pest-red text-white" aria-label="Call us">
-          <Phone className="h-5 w-5" />
-        </a>
-      </div>
+        {/* Mobile Menu Overlay */}
+        <div className={`lg:hidden ${isOpen ? "block" : "hidden"} fixed top-[80px] left-0 right-0 bottom-0 z-40`}>
+          {/* Background overlay */}
+          <div className="absolute inset-0 bg-black/50" onClick={() => setIsOpen(false)}></div>
 
-      {/* Mobile Menu */}
-      <div className={`lg:hidden ${isOpen ? "block" : "hidden"}`}>
-        <div className="px-2 pt-2 pb-3 space-y-1 bg-white shadow-lg border-t border-gray-200">
-          {mainNavigation.map((item) => (
-            <Link key={item.name} href={item.href} className="block px-3 py-2 text-base font-medium text-gray-800 hover:text-pest-red flex items-center gap-2" onClick={() => setIsOpen(false)}>
-              <span>{item.name}</span>
-            </Link>
-          ))}
-          <div className="mt-4 px-3 py-2">
-            <Link href="/contact" className="block w-full text-center bg-pest-red text-white px-4 py-2 rounded-full font-bold hover:bg-pest-red/90 transition-colors" onClick={() => setIsOpen(false)}>
-              REQUEST SERVICE
-            </Link>
+          {/* Menu content */}
+          <div className="relative bg-white shadow-lg">
+            <div className="px-2 pt-2 pb-3 space-y-1">
+              {mainNavigation.map((item) => (
+                <Link key={item.name} href={item.href} className="block px-3 py-2 text-base font-medium text-gray-800 hover:text-pest-red flex items-center gap-2" onClick={() => setIsOpen(false)}>
+                  <span>{item.name}</span>
+                </Link>
+              ))}
+              <Link href="/service-areas" className="block px-3 py-2 text-base font-medium text-gray-800 hover:text-pest-red flex items-center gap-2" onClick={() => setIsOpen(false)}>
+                Service Area
+              </Link>
+              <div className="mt-4 px-3 py-2">
+                <Link href="/contact" className="block w-full text-center bg-pest-red text-white px-4 py-2 rounded-full font-bold hover:bg-pest-red/90 transition-colors" onClick={() => setIsOpen(false)}>
+                  REQUEST SERVICE
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </div>
