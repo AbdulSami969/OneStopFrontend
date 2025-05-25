@@ -22,7 +22,7 @@ export default function Hero({ data }: HeroProps = {}) {
   const logoUrl = data?.logoImageUrl || "/images/1stop-logo.png";
 
   return (
-    <section className="relative bg-cover bg-center min-h-[500px] md:min-h-[600px] h-[calc(100vh-200px)] md:h-auto  flex flex-col justify-center" style={{ backgroundImage: `url('${backgroundImage}')` }}>
+    <section className="relative bg-cover bg-center min-h-[500px] md:min-h-[600px] h-[calc(100vh-150px)] md:h-auto  flex flex-col justify-center" style={{ backgroundImage: `url('${backgroundImage}')` }}>
       <div className="absolute inset-0 bg-black/70"></div>
       <div className="container mx-auto px-4 md:px-6 lg:px-8 relative z-10 py-12 md:py-24 lg:py-32">
         <div className="max-w-4xl mx-auto text-center text-white">
@@ -80,6 +80,12 @@ export default function Hero({ data }: HeroProps = {}) {
       <style jsx global>{`
         .pest-icons-swiper {
           padding: 0 30px;
+        }
+
+        @media (max-width: 400px) {
+          .hero-section {
+            height: calc(100vh - 50px);
+          }
         }
       `}</style>
     </section>
