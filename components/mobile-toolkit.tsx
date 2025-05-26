@@ -43,15 +43,15 @@ export default function MobileToolkit() {
   return (
     <>
       <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden">
-        <div className="grid grid-cols-5 bg-pest-red text-white">
+        <div className="grid grid-cols-4 bg-pest-red text-white">
           <button onClick={handleOpenBooking} className={`toolkit-button py-2 border-r border-red-700 ${isBookingModalOpen ? "bg-red-700" : ""}`}>
             <CalendarCheck className="h-5 w-5 mb-1" />
             <span className="text-xs">Book</span>
           </button>
-          <Link href="/text" className="toolkit-button py-2 border-r border-red-700">
+          {/* <Link href="/text" className="toolkit-button py-2 border-r border-red-700">
             <MessageSquare className="h-5 w-5 mb-1" />
             <span className="text-xs">Text</span>
-          </Link>
+          </Link> */}
           <Link href="tel:5187285589" className="toolkit-button py-2 border-r border-red-700">
             <div className="h-5 w-5 mb-1">
               <svg xmlns="http://www.w3.org/2000/svg" shapeRendering="geometricPrecision" textRendering="geometricPrecision" imageRendering="optimizeQuality" fillRule="evenodd" clipRule="evenodd" viewBox="0 0 509 511.514">
