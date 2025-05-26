@@ -111,3 +111,69 @@ main {
     padding-bottom: 0;
   }
 }
+
+/* Testimonials Swiper Styles */
+.testimonials-swiper .swiper-pagination-bullet-active {
+  background-color: #e53e3e !important;
+}
+
+.testimonials-swiper .swiper-button-next,
+.testimonials-swiper .swiper-button-prev {
+  color: #e53e3e !important;
+  width: 30px !important;
+  height: 30px !important;
+  background-color: white !important;
+  border-radius: 50% !important;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) !important;
+}
+
+.testimonials-swiper .swiper-button-next:after,
+.testimonials-swiper .swiper-button-prev:after {
+  font-size: 12px !important;
+  font-weight: bold !important;
+}
+
+.testimonials-swiper .swiper-button-next {
+  right: 5px !important;
+}
+
+.testimonials-swiper .swiper-button-prev {
+  left: 5px !important;
+}
+
+.testimonials-swiper .swiper-slide {
+  height: auto !important;
+}
+
+.testimonials-swiper .swiper-slide > div {
+  height: 100% !important;
+}
+
+/* Modal Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.testimonial-modal {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.testimonial-modal-content {
+  animation: slideIn 0.3s ease-out;
+}

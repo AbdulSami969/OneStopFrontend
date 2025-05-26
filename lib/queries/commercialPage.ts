@@ -79,8 +79,10 @@ export const commercialPageQuery = groq`
     },
     // Testimonials Section
     testimonialsSection {
+    ...,
       heading,
       testimonials[]->{
+      ...,
         _id,
         name,
         testimonial,

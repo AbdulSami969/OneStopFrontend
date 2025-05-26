@@ -72,21 +72,25 @@ export async function getHomepage() {
         },
         
         // Testimonials Section
-        testimonialsSection {
-          title,
-          testimonials[]-> {
-            _id,
-            name,
-            company,
-            testimonial,
-            rating,
-            "imageUrl": image.asset->url
-          },
-          ctaButton {
+        // Testimonials Section
+    testimonialsSection {
+    ...,
+      title,
+      testimonials[]->{
+      ...,
+        _id,
+        name,
+        testimonial,
+        company,
+        rating,
+        externalLink,
+        "imageUrl": image.asset->url
+      },
+      ctaButton {
             text,
             link
           }
-        },
+    },
         
         // Service Areas Section
         serviceAreasSection {

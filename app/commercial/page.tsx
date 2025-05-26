@@ -4,6 +4,7 @@ import { Star, ArrowRight, Check, Building2, ShieldCheck, Clock, Briefcase } fro
 import { Button } from "@/components/ui/button";
 import CTASection from "@/components/cta-section";
 import ServiceAreas from "@/components/service-areas";
+import TestimonialsSection from "@/components/testimonials-section";
 import { client } from "@/lib/sanity.client";
 import { commercialPageQuery } from "@/lib/queries/commercialPage";
 import { PortableText, PortableTextComponents } from "@portabletext/react";
@@ -68,6 +69,8 @@ interface CommercialPageData {
   testimonialsSection?: {
     heading?: string;
     testimonials?: TestimonialReference[];
+    button?: string;
+    link?: string;
   };
   serviceAreasSection?: {
     heading?: string;
@@ -110,23 +113,6 @@ const portableTextComponents: PortableTextComponents = {
   },
 };
 
-const RenderStars = ({ rating }: { rating: number }) => {
-  const fullStars = Math.floor(rating);
-  const halfStar = rating % 1 !== 0;
-  const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
-  return (
-    <div className="flex">
-      {[...Array(fullStars)].map((_, i) => (
-        <Star key={`full-${i}`} className="h-5 w-5 fill-yellow-400 text-yellow-400" />
-      ))}
-      {halfStar && <Star key="half" className="h-5 w-5 fill-yellow-400 text-yellow-400" />}
-      {[...Array(emptyStars)].map((_, i) => (
-        <Star key={`empty-${i}`} className="h-5 w-5 text-yellow-400" />
-      ))}
-    </div>
-  );
-};
-
 export async function generateMetadata() {
   const pageData: CommercialPageData = await client.fetch(commercialPageQuery);
   return {
@@ -157,7 +143,7 @@ export default async function CommercialPage() {
             {pageData.heroSection?.description && <p className="text-lg mb-8">{pageData.heroSection.description}</p>}
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               {pageData.heroSection?.scheduleButton?.text && pageData.heroSection.scheduleButton.path && (
-                <Button asChild size="lg" className="bg-pest-red hover:bg-pest-red/90 text-white rounded-full px-8 py-6 text-lg">
+                <Button asChild size="lg" className="bg-pest-red hover:bg-pest-red/90 text-white rounded-full px-8 py-6 text-lg w-auto md:w-auto">
                   <Link href={pageData.heroSection.scheduleButton.path} className="flex items-center gap-2">
                     {pageData.heroSection.scheduleButton.text}
                     <ArrowRight className="h-5 w-5" />
@@ -184,7 +170,13 @@ export default async function CommercialPage() {
             <div className="flex flex-col md:flex-row items-center justify-center md:justify-between text-white">
               {pageData.reviewBanner.text && <p className="text-center md:text-left mb-2 md:mb-0">{pageData.reviewBanner.text}</p>}
               <div className="flex items-center gap-2">
-                {pageData.reviewBanner.rating && <RenderStars rating={pageData.reviewBanner.rating} />}
+                {pageData.reviewBanner.rating && (
+                  <div className="flex">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="h-5 w-5 fill-yellow-400 text-yellow-400" />
+                    ))}
+                  </div>
+                )}
                 {pageData.reviewBanner.google_review_button?.text && pageData.reviewBanner.google_review_button.external_path && (
                   <Link href={pageData.reviewBanner.google_review_button.external_path} className="text-white underline hover:text-white/90">
                     {pageData.reviewBanner.google_review_button.text}
@@ -314,10 +306,10 @@ export default async function CommercialPage() {
               )}
               {pageData.whyChooseUsSection.cta_button?.text && pageData.whyChooseUsSection.cta_button.path && (
                 <div className="text-center">
-                  <Button asChild size="lg" className="bg-pest-red hover:bg-pest-red/90 text-white rounded-full px-8 py-6 text-lg">
-                    <Link href={pageData.whyChooseUsSection.cta_button.path} className="flex items-center gap-2">
-                      {pageData.whyChooseUsSection.cta_button.text}
-                      <ArrowRight className="h-5 w-5" />
+                  <Button asChild size="lg" className="bg-pest-red hover:bg-pest-red/90 text-white rounded-full px-8 py-8 sm:px-8 sm:py-6 text-base sm:text-lg max-w-full md:max-w-max mx-auto whitespace-normal">
+                    <Link href={pageData.whyChooseUsSection.cta_button.path} className="flex items-center justify-center md:justify-center py-2 px-3 md:px-4">
+                      <span>{pageData.whyChooseUsSection.cta_button.text}</span>
+                      <ArrowRight className="h-5 w-5 flex-shrink-0 ml-2" />
                     </Link>
                   </Button>
                 </div>
@@ -328,58 +320,7 @@ export default async function CommercialPage() {
       )}
 
       {/* Testimonials */}
-      {pageData.testimonialsSection && (
-        <section className="py-16 bg-gray-light">
-          <div className="container mx-auto px-4 md:px-6 lg:px-8">
-            <div className="text-center mb-12">
-              {pageData.testimonialsSection.heading && <h2 className="text-3xl md:text-4xl font-bold mb-6">{pageData.testimonialsSection.heading}</h2>}
-              <div className="flex justify-center mb-4">
-                <div className="flex">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="h-6 w-6 fill-yellow-400 text-yellow-400" />
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {pageData.testimonialsSection.testimonials && pageData.testimonialsSection.testimonials.length > 0 ? (
-              <div className="grid md:grid-cols-3 gap-6">
-                {pageData.testimonialsSection.testimonials.map((testimonial) => (
-                  <a key={testimonial._id} href={testimonial.externalLink} target="_blank" rel="noopener noreferrer" className="block bg-white p-6 rounded-lg shadow-md relative hover:shadow-lg transition-shadow duration-300">
-                    <div className="absolute -top-4 -right-4 text-pest-red opacity-20">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z" />
-                        <path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z" />
-                      </svg>
-                    </div>
-                    {testimonial.rating && <RenderStars rating={testimonial.rating} />}
-                    {testimonial.testimonial && <p className="italic my-4">{testimonial.testimonial}</p>}
-                    <div className="flex items-center gap-3">
-                      {testimonial.imageUrl && (
-                        <div className="relative h-12 w-12 rounded-full overflow-hidden bg-gray-200 border-2 border-pest-red">
-                          <Image src={testimonial.imageUrl} alt={testimonial.name || "Customer"} fill className="object-cover" />
-                        </div>
-                      )}
-                      <div>
-                        {testimonial.name && <p className="font-medium">{testimonial.name}</p>}
-                        {testimonial.company && <p className="text-sm text-gray-600">{testimonial.company}</p>}
-                      </div>
-                    </div>
-                  </a>
-                ))}
-              </div>
-            ) : (
-              <p className="text-center">No testimonials to display at this time.</p>
-            )}
-
-            <div className="text-center mt-8">
-              <Button asChild variant="outline" className="border-pest-red text-pest-red hover:bg-pest-red/10">
-                <Link href="/testimonials">View All Testimonials</Link>
-              </Button>
-            </div>
-          </div>
-        </section>
-      )}
+      {pageData.testimonialsSection && <TestimonialsSection heading={pageData.testimonialsSection.heading} testimonials={pageData.testimonialsSection.testimonials} button={pageData.testimonialsSection.button} link={pageData.testimonialsSection.link} />}
 
       {/* Service Areas - using the existing component */}
       <ServiceAreas />

@@ -7,6 +7,7 @@ import { urlForImage } from "@/lib/sanity.image";
 import { client } from "@/lib/sanity.client";
 import { servicesMainPageQuery } from "@/lib/queries/servicesMainPage";
 import { PortableText, PortableTextComponents } from "@portabletext/react";
+import TestimonialsSection from "@/components/testimonials-section";
 
 interface ServiceReference {
   _id: string;
@@ -73,6 +74,8 @@ interface ServicesMainPageData {
   testimonialsSection?: {
     heading?: string;
     testimonials?: TestimonialReference[];
+    button?: string;
+    link?: string;
   };
   serviceAreasSection?: {
     heading?: string;
@@ -306,59 +309,8 @@ export default async function ServicesPage() {
       )}
 
       {/* Testimonials Section */}
-      {pageData.testimonialsSection && (
-        <section className="py-16 bg-gray-light">
-          <div className="container-custom">
-            <div className="text-center mb-12">
-              {pageData.testimonialsSection.heading && <h2 className="text-3xl md:text-4xl font-bold mb-6">{pageData.testimonialsSection.heading}</h2>}
-              <div className="flex justify-center mb-4">
-                <div className="flex">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="h-6 w-6 fill-yellow-400 text-yellow-400" />
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {pageData.testimonialsSection.testimonials && pageData.testimonialsSection.testimonials.length > 0 ? (
-              <div className="grid md:grid-cols-3 gap-6">
-                {pageData.testimonialsSection.testimonials.map((testimonial) => (
-                  <div key={testimonial._id} className="bg-white p-6 rounded-lg shadow-md relative">
-                    <div className="absolute -top-4 -right-4 text-pest-red opacity-20">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z" />
-                        <path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z" />
-                      </svg>
-                    </div>
-                    {/* {testimonial} */}
-                    {testimonial.rating && <RenderStars rating={testimonial.rating} />}
-                    {testimonial.testimonial && <p className="italic my-4">{testimonial.testimonial}</p>}
-                    <div className="flex items-center gap-3">
-                      {testimonial.imageUrl && (
-                        <div className="relative h-12 w-12 rounded-full overflow-hidden bg-gray-200 border-2 border-pest-red">
-                          <Image src={testimonial.imageUrl} alt={testimonial.name || "Customer"} fill className="object-cover" />
-                        </div>
-                      )}
-                      <div>
-                        {testimonial.name && <p className="font-medium">{testimonial.name}</p>}
-                        {testimonial.company && <p className="text-sm text-gray-600">{testimonial.company}</p>}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p className="text-center">No testimonials to display at this time.</p>
-            )}
-
-            <div className="text-center mt-8">
-              <Button asChild variant="outline" className="border-pest-red text-pest-red hover:bg-pest-red/10">
-                <Link href="/testimonials">View All Testimonials</Link>
-              </Button>
-            </div>
-          </div>
-        </section>
-      )}
+      {/* Testimonials */}
+      {pageData.testimonialsSection && <TestimonialsSection heading={pageData.testimonialsSection.heading} testimonials={pageData.testimonialsSection.testimonials} button={pageData.testimonialsSection.button} link={pageData.testimonialsSection.link} />}
 
       {/* Service Areas Section */}
       {pageData.serviceAreasSection && (

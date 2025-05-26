@@ -65,8 +65,10 @@ export const servicesMainPageQuery = groq`
     },
     // Testimonials Section
     testimonialsSection {
+    ...,
       heading,
       testimonials[]->{
+      ...,
         _id,
         rating,
         name,

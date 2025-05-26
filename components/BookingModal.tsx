@@ -1,10 +1,11 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { X, ArrowLeft, MapPin, Clock, User, Calendar as CalendarIconLucide } from "lucide-react";
+import { X, ArrowLeft, MapPin, Clock, User, Calendar as CalendarIconLucide, Loader2 } from "lucide-react";
 import Image from "next/image";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
+import { Toaster, toast } from "react-hot-toast";
 
 interface BookingModalProps {
   isOpen: boolean;
@@ -33,6 +34,7 @@ const allAvailableTimes = ["10:00 AM", "11:00 AM", "12:00 PM", "1:00 PM", "2:00 
 
 export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
   const [step, setStep] = useState(1);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     pestType: "",
     propertyType: "",
@@ -47,6 +49,12 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
     selectedDate: null,
     selectedTime: "",
   });
+  const [errors, setErrors] = useState<{
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+    phone?: string;
+  }>({});
 
   const step2Ref = useRef<HTMLDivElement | null>(null);
 
@@ -58,12 +66,48 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
 
   const handleInputChange = (field: keyof FormData, value: string | Date | null) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+    // Clear error for the field being changed if it's one of the validated fields in step 4
+    if (["firstName", "lastName", "email", "phone"].includes(field as string)) {
+      setErrors((prev) => ({ ...prev, [field]: undefined }));
+    }
+  };
+
+  // Validation handlers for Step 4 fields onBlur
+  const validateAndSetError = (field: keyof typeof errors, value: string, message: string, condition: boolean) => {
+    if (condition) {
+      setErrors((prev) => ({ ...prev, [field]: message }));
+    } else {
+      setErrors((prev) => ({ ...prev, [field]: undefined }));
+    }
+  };
+
+  const handleFirstNameBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    validateAndSetError("firstName", e.target.value, "First Name is required.", !e.target.value.trim());
+  };
+
+  const handleLastNameBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    validateAndSetError("lastName", e.target.value, "Last Name is required.", !e.target.value.trim());
+  };
+
+  const handleEmailBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    const emailValue = e.target.value.trim();
+    if (!emailValue) {
+      setErrors((prev) => ({ ...prev, email: "Email is required." }));
+    } else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(emailValue)) {
+      setErrors((prev) => ({ ...prev, email: "Invalid email address." }));
+    } else {
+      setErrors((prev) => ({ ...prev, email: undefined }));
+    }
+  };
+
+  const handlePhoneBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    validateAndSetError("phone", e.target.value, "Mobile Phone is required.", !e.target.value.trim());
   };
 
   const nextStep = () => {
     if (step < 7) {
       setStep(step + 1);
-      if (step === 1) {
+      if (step === 1 || step === 2 || step === 3 || step === 4 || step === 5 || step === 6) {
         setTimeout(() => {
           const scrollableContent = document.querySelector(".overflow-y-auto");
           if (scrollableContent) {
@@ -78,12 +122,35 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
     if (step > 1) setStep(step - 1);
   };
 
-  const handleSubmit = () => {
-    console.log("Booking submitted:", {
+  const handleSubmit = async () => {
+    setIsSubmitting(true);
+    const payload = {
       ...formData,
       selectedDate: formData.selectedDate ? formData.selectedDate.toISOString().split("T")[0] : null,
-    });
-    setStep(7);
+    };
+
+    try {
+      const response = await fetch("/api/send-booking-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (response.ok) {
+        setStep(7);
+      } else {
+        const errorData = await response.json();
+        console.error("Failed to send booking email:", response.status, errorData.message);
+        toast.error(errorData.message || "Could not submit your booking. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error submitting booking:", error);
+      toast.error("An unexpected error occurred. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const resetAndClose = () => {
@@ -114,6 +181,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
 
   return (
     <div className="fixed inset-0 z-[100] flex items-end md:justify-end justify-center pointer-events-none md:pr-2 pr-0 rtl:p-0">
+      <Toaster position="top-center" reverseOrder={false} />
       <div className="bg-white shadow-xl w-full md:max-w-sm h-[70vh] max-h-[550px] flex flex-col overflow-hidden pointer-events-auto mb-16 md:mb-20 mb-0 md:mr-0 mr-0 rtl:ml-0 rtl:mr-6 md:rtl:mr-6 md:rounded-lg rounded-t-lg">
         {/* Fixed Header */}
         <div className="flex items-center justify-between p-3 border-b min-h-20 flex-shrink-0">
@@ -201,10 +269,22 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
             <div className="p-6">
               <h2 className="text-2xl font-bold mb-6">Who Should We Contact?</h2>
               <div className="space-y-4 mb-6">
-                <input type="text" value={formData.firstName} onChange={(e) => handleInputChange("firstName", e.target.value)} className="w-full p-3 border border-gray-300 rounded-lg" placeholder="First Name*" required />
-                <input type="text" value={formData.lastName} onChange={(e) => handleInputChange("lastName", e.target.value)} className="w-full p-3 border border-gray-300 rounded-lg" placeholder="Last Name*" required />
-                <input type="email" value={formData.email} onChange={(e) => handleInputChange("email", e.target.value)} className="w-full p-3 border border-gray-300 rounded-lg" placeholder="Email Address*" required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" />
-                <input type="tel" value={formData.phone} onChange={(e) => handleInputChange("phone", e.target.value)} className="w-full p-3 border border-gray-300 rounded-lg" placeholder="Mobile Phone*" required />
+                <div>
+                  <input type="text" value={formData.firstName} onChange={(e) => handleInputChange("firstName", e.target.value)} onBlur={handleFirstNameBlur} className="w-full p-3 border border-gray-300 rounded-lg" placeholder="First Name*" required />
+                  {errors.firstName && <p className="text-pest-red text-xs mt-1">{errors.firstName}</p>}
+                </div>
+                <div>
+                  <input type="text" value={formData.lastName} onChange={(e) => handleInputChange("lastName", e.target.value)} onBlur={handleLastNameBlur} className="w-full p-3 border border-gray-300 rounded-lg" placeholder="Last Name*" required />
+                  {errors.lastName && <p className="text-pest-red text-xs mt-1">{errors.lastName}</p>}
+                </div>
+                <div>
+                  <input type="email" value={formData.email} onChange={(e) => handleInputChange("email", e.target.value)} onBlur={handleEmailBlur} className="w-full p-3 border border-gray-300 rounded-lg" placeholder="Email Address*" required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" />
+                  {errors.email && <p className="text-pest-red text-xs mt-1">{errors.email}</p>}
+                </div>
+                <div>
+                  <input type="tel" value={formData.phone} onChange={(e) => handleInputChange("phone", e.target.value)} onBlur={handlePhoneBlur} className="w-full p-3 border border-gray-300 rounded-lg" placeholder="Mobile Phone*" required />
+                  {errors.phone && <p className="text-pest-red text-xs mt-1">{errors.phone}</p>}
+                </div>
               </div>
               <div className="mb-6 p-4 bg-gray-50 rounded-lg">
                 <p className="text-sm text-gray-600">
@@ -315,19 +395,31 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                 Next
               </button>
             )}
-            {step === 4 && (
-              <button onClick={nextStep} disabled={!formData.firstName || !formData.lastName || !formData.email || !formData.phone} className="w-full bg-pest-red text-white py-3 rounded-lg font-semibold disabled:bg-gray-300 disabled:cursor-not-allowed hover:bg-pest-red/90 transition-colors">
-                Next
-              </button>
-            )}
+            {step === 4 &&
+              (() => {
+                const isEmailValid = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(formData.email);
+                const isDisabled = !formData.firstName || !formData.lastName || !formData.email || !isEmailValid || !formData.phone;
+                return (
+                  <button onClick={nextStep} disabled={isDisabled} className="w-full bg-pest-red text-white py-3 rounded-lg font-semibold disabled:bg-gray-300 disabled:cursor-not-allowed hover:bg-pest-red/90 transition-colors">
+                    Next
+                  </button>
+                );
+              })()}
             {step === 5 && (
               <button onClick={nextStep} disabled={!formData.selectedDate || !formData.selectedTime} className="w-full bg-pest-red text-white py-3 rounded-lg font-semibold disabled:bg-gray-400 disabled:text-gray-700 disabled:cursor-not-allowed hover:bg-pest-red/90 transition-colors">
                 Next
               </button>
             )}
             {step === 6 && (
-              <button onClick={handleSubmit} className="w-full bg-pest-red text-white py-3 rounded-lg font-semibold hover:bg-pest-red/90 transition-colors">
-                Confirm & Submit
+              <button onClick={handleSubmit} className="w-full bg-pest-red text-white py-3 rounded-lg font-semibold hover:bg-pest-red/90 transition-colors flex items-center justify-center disabled:opacity-75 disabled:cursor-not-allowed" disabled={isSubmitting}>
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                    Submitting...
+                  </>
+                ) : (
+                  "Confirm & Submit"
+                )}
               </button>
             )}
             {step === 7 && (
