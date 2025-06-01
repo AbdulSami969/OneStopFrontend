@@ -1,24 +1,25 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { X, Send } from "lucide-react";
+import { X, Send, Loader2 } from "lucide-react";
 import Image from "next/image";
-// import { Button } from "@/components/ui/button"; // Not used
-// import Image from "next/image"; // Not used
-
-// Interface for a single message
-interface ChatMessage {
-  id: string;
-  text: string;
-  sender: "user" | "ai";
-  timestamp: Date;
-}
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import { useChat } from "@ai-sdk/react";
 
 export default function ContactModal() {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [inputValue, setInputValue] = useState("");
   const messagesEndRef = useRef<null | HTMLDivElement>(null);
+
+  // Use the AI chat hook instead of local state
+  const { messages, input, handleInputChange, handleSubmit, isLoading, stop, reload, error } = useChat({ api: "/api/gemini" ,  initialMessages: [
+      {
+        id: "initial-message",
+        role: "assistant",
+        content: "Hello! I'm your assistant at 1 Stop Pest Control. How can I help you today?"
+      }
+    ] });
+
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -29,71 +30,23 @@ export default function ContactModal() {
   }, [messages]);
 
   useEffect(() => {
-    // This effect is to update the helper div, no longer needed.
-    // const contactModalElement = document.getElementById("contact-modal-is-open");
-    // if (contactModalElement) {
-    //   contactModalElement.dataset.isOpen = isOpen.toString();
-    // }
-  }, [isOpen]);
-
-  useEffect(() => {
     // Dispatch an event whenever isOpen changes
     document.dispatchEvent(new CustomEvent("contactModalStateChange", { detail: { isOpen } }));
   }, [isOpen]);
 
   useEffect(() => {
     const handleToggle = () => {
-      setIsOpen((prevIsOpen) => {
-        const newIsOpen = !prevIsOpen;
-        if (newIsOpen && messages.length === 0) {
-          setMessages([
-            {
-              id: "welcome-" + Date.now(),
-              text: "Hello! How can I help you today?",
-              sender: "ai",
-              timestamp: new Date(),
-            },
-          ]);
-        }
-        return newIsOpen;
-      });
+      setIsOpen((prevIsOpen) => !prevIsOpen);
     };
 
     document.addEventListener("toggleContactModal", handleToggle);
     return () => {
       document.removeEventListener("toggleContactModal", handleToggle);
     };
-  }, [messages.length]); // Depend on messages.length to correctly assess if welcome message is needed
-
-  const handleSendMessage = () => {
-    if (inputValue.trim() === "") return;
-
-    const userMessage: ChatMessage = {
-      id: "user-" + Date.now(),
-      text: inputValue,
-      sender: "user",
-      timestamp: new Date(),
-    };
-    setMessages((prevMessages) => [...prevMessages, userMessage]);
-    setInputValue("");
-
-    // Simulate AI response
-    setTimeout(() => {
-      const aiResponse: ChatMessage = {
-        id: "ai-" + Date.now(),
-        text: "Thanks for your message! An AI assistant will be with you shortly. For now, this is a simulated response.",
-        sender: "ai",
-        timestamp: new Date(),
-      };
-      setMessages((prevMessages) => [...prevMessages, aiResponse]);
-    }, 1000);
-  };
+  }, []);
 
   const handleClose = () => {
     setIsOpen(false);
-    // Optionally clear messages when closing:
-    // setMessages([]);
-    // setInputValue("");
   };
 
   if (!isOpen) return null;
@@ -111,25 +64,117 @@ export default function ContactModal() {
             <span className="sr-only">Close</span>
           </button>
         </div>
+
         {/* Scrollable Message Area */}
         <div className="overflow-y-auto flex-grow p-4 space-y-3 bg-gray-100">
-          {messages.map((msg) => (
-            <div key={msg.id} className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}>
-              <div className={`max-w-[70%] p-3 rounded-xl shadow ${msg.sender === "user" ? "bg-pest-red text-white rounded-br-none" : "bg-white text-gray-800 rounded-bl-none border border-gray-200"}`}>
-                <p className="text-sm">{msg.text}</p>
-                <p className={`text-xs mt-1 ${msg.sender === "user" ? "text-gray-200" : "text-gray-400"} text-right`}>{msg.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</p>
+          {messages.length === 0 && (
+            <div className="w-full mt-32 text-gray-500 items-center justify-center flex gap-3">
+              No messages yet.
+            </div>
+          )}
+          
+          {messages.map((message, index) => (
+            <div key={message.id || index} className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}>
+              <div className={`max-w-[70%] p-3 rounded-xl shadow ${
+                message.role === "user" 
+                  ? "bg-pest-red text-white rounded-br-none" 
+                  : "bg-white text-gray-800 rounded-bl-none border border-gray-200"
+              }`}>
+                <div className="text-sm">
+                  <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
+                    components={{
+                      code({ node, inline, className, children, ...props }) {
+                        return inline ? (
+                          <code className="bg-gray-200 px-1 rounded text-gray-800">
+                            {children}
+                          </code>
+                        ) : (
+                          <pre className="bg-gray-200 p-2 rounded mt-2 overflow-x-auto">
+                            <code className="text-gray-800">
+                              {children}
+                            </code>
+                          </pre>
+                        );
+                      },
+                      ul: ({ children }) => (
+                        <ul className="list-disc pl-4 space-y-1 mt-2">
+                          {children}
+                        </ul>
+                      ),
+                      ol: ({ children }) => (
+                        <ol className="list-decimal pl-4 space-y-1 mt-2">
+                          {children}
+                        </ol>
+                      ),
+                      p: ({ children }) => (
+                        <p className="mb-2 last:mb-0">{children}</p>
+                      ),
+                    }}
+                  >
+                    {message.content}
+                  </ReactMarkdown>
+                </div>
               </div>
             </div>
           ))}
+
+          {/* Loading indicator */}
+          {isLoading && (
+            <div className="flex justify-start">
+              <div className="bg-white text-gray-800 rounded-xl rounded-bl-none border border-gray-200 p-3 shadow">
+                <div className="flex items-center gap-2 text-sm">
+                   <span>...</span>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Error handling */}
+          {error && (
+            <div className="flex justify-center">
+              <div className="bg-red-50 border border-red-200 text-red-800 rounded-lg p-3 text-sm">
+                <div className="flex items-center gap-2">
+                  <span>An error occurred.</span>
+                  <button
+                    className="underline hover:no-underline"
+                    type="button"
+                    onClick={() => reload()}
+                  >
+                    Retry
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
           <div ref={messagesEndRef} />
         </div>
+
         {/* Fixed Footer (Input Area) */}
-        <div className="p-3 border-t flex-shrink-0 flex items-center space-x-2 bg-white rounded-b-lg">
-          <input type="text" value={inputValue} onChange={(e) => setInputValue(e.target.value)} onKeyPress={(e) => e.key === "Enter" && handleSendMessage()} placeholder="Type your message..." className="flex-grow border border-gray-300 rounded-lg py-2 px-3 focus:ring-2 focus:ring-pest-red focus:border-pest-red outline-none text-sm" />
-          <button onClick={handleSendMessage} disabled={!inputValue.trim()} className="bg-pest-red text-white p-2 rounded-lg hover:bg-pest-red/90 disabled:bg-gray-300 transition-colors">
-            <Send className="h-5 w-5" />
-            <span className="sr-only">Send</span>
-          </button>
+        <div className="p-3 border-t flex-shrink-0 bg-white rounded-b-lg">
+          <form onSubmit={handleSubmit} className="flex items-center space-x-2">
+            <input 
+              type="text" 
+              value={input} 
+              onChange={handleInputChange}
+              placeholder="Type your message..." 
+              className="flex-grow border border-gray-300 rounded-lg py-2 px-3 focus:ring-2 focus:ring-pest-red focus:border-pest-red outline-none text-sm"
+              disabled={isLoading}
+            />
+            <button 
+              type="submit"
+              disabled={!input.trim() || isLoading} 
+              className="bg-pest-red text-white p-2 rounded-lg hover:bg-pest-red/90 disabled:bg-gray-300 transition-colors"
+            >
+              {isLoading ? (
+                <Loader2 className="h-5 w-5 animate-spin" />
+              ) : (
+                <Send className="h-5 w-5" />
+              )}
+              <span className="sr-only">Send</span>
+            </button>
+          </form>
         </div>
       </div>
     </div>
