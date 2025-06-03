@@ -50,57 +50,112 @@ export default function DesktopToolkit() {
   // User has modified the layout to be fixed at bottom-0 and rounded-t-lg
   return (
     <>
-      <div className="fixed bottom-0 right-2 z-50 hidden md:flex items-center rtl:space-x-reverse">
+   <div className="fixed bottom-0 right-2 z-50 hidden md:flex items-center rtl:space-x-reverse">
         <div className="bg-pest-red rounded-t-lg shadow-lg overflow-hidden flex items-center">
           <div className="flex divide-x divide-red-700">
-            <button onClick={handleOpenBooking} className={`toolkit-item ${isBookingModalOpen ? "bg-red-700" : "hover:bg-red-700/80"}`}>
+            <button 
+              onClick={handleOpenBooking} 
+              className={`flex flex-col items-center justify-center px-4 py-3 text-white text-xs transition-colors duration-150 ${
+                isBookingModalOpen ? "bg-red-700" : "hover:bg-red-700/80"
+              }`}
+            >
               <CalendarCheck className="h-6 w-6 mb-0.5" />
-              <span className="text-xs pt-1">Book</span>
+              <span className="pt-1">Book</span>
             </button>
-            <Link href="https://wa.me/15187285589" target="_blank" rel="noopener noreferrer" className="toolkit-item hover:bg-red-700/80">
+            
+            <Link 
+              href="https://wa.me/15187285589" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="flex flex-col items-center justify-center px-6 py-3 text-white text-xs hover:bg-red-700/80 transition-colors duration-150"
+            >
               <WhatsappIcon />
-              <span className="text-xs pt-1">WA</span>
+              <span className="pt-1">WA</span>
             </Link>
-            <Link href="tel:5187285589" className="toolkit-item hover:bg-red-700/80">
+            
+            <Link 
+              href="tel:5187285589" 
+              className="flex flex-col items-center justify-center px-6 py-3 text-white text-xs hover:bg-red-700/80 transition-colors duration-150"
+            >
               <Phone className="h-6 w-6 mb-0.5" />
-              <span className="text-xs pt-1">Call</span>
+              <span className="pt-1">Call</span>
             </Link>
-            <Link href="mailto:info@1stoppestcontrolllc.com" className="toolkit-item hover:bg-red-700/80">
+            
+            <Link 
+              href="mailto:info@1stoppestcontrolllc.com" 
+              className="flex flex-col items-center justify-center px-6 py-3 text-white text-xs hover:bg-red-700/80 transition-colors duration-150"
+            >
               <Mail className="h-6 w-6 mb-0.5" />
-              <span className="text-xs pt-1">Email</span>
+              <span className="pt-1">Email</span>
             </Link>
-            <button onClick={handleOpenChat} className={`toolkit-item ${isChatModalOpen ? "bg-red-700" : "hover:bg-red-700/80"}`}>
+            
+            <button 
+              onClick={handleOpenChat} 
+              className={`flex flex-col items-center justify-center px-6 py-3 text-white text-xs transition-colors duration-150 ${
+                isChatModalOpen ? "bg-red-700" : "hover:bg-red-700/80"
+              }`}
+            >
               <MessageCircle className="h-5 w-6 mb-0.5" />
-              <span className="text-xs pt-1">Chat</span>
+              <span className="pt-1">Chat</span>
             </button>
           </div>
         </div>
       </div>
 
       <BookingModal isOpen={isBookingModalOpen} onClose={closeBookingModal} />
-
-      <style jsx global>{`
-        .toolkit-item {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          padding: 0.8rem 1rem;
-          color: white;
-          font-size: 0.75rem;
-          line-height: 1rem;
-          transition: background-color 0.15s ease-in-out;
-        }
-        .toolkit-item svg {
-          margin-bottom: 0.125rem;
-          height: 1.5rem;
-          width: 2.75rem;
-        }
-        .toolkit-item button > svg.lucide-message-circle {
-          height: 1.5rem;
-          width: 5.5rem;
-        }
-      `}</style>
     </>
+    //   <>
+    //   <div className="fixed bottom-0 right-2 z-50 hidden md:flex items-center rtl:space-x-reverse">
+    //     <div className="bg-pest-red rounded-t-lg shadow-lg overflow-hidden flex items-center">
+    //       <div className="flex divide-x divide-red-700">
+    //         <button onClick={handleOpenBooking} className={`toolkit-item ${isBookingModalOpen ? "bg-red-700" : "hover:bg-red-700/80"}`}>
+    //           <CalendarCheck className="h-6 w-6 mb-0.5" />
+    //           <span className="text-xs pt-1">Book</span>
+    //         </button>
+    //         <Link href="https://wa.me/15187285589" target="_blank" rel="noopener noreferrer" className="toolkit-item hover:bg-red-700/80">
+    //           <WhatsappIcon />
+    //           <span className="text-xs pt-1">WA</span>
+    //         </Link>
+    //         <Link href="tel:5187285589" className="toolkit-item hover:bg-red-700/80">
+    //           <Phone className="h-6 w-6 mb-0.5" />
+    //           <span className="text-xs pt-1">Call</span>
+    //         </Link>
+    //         <Link href="mailto:info@1stoppestcontrolllc.com" className="toolkit-item hover:bg-red-700/80">
+    //           <Mail className="h-6 w-6 mb-0.5" />
+    //           <span className="text-xs pt-1">Email</span>
+    //         </Link>
+    //         <button onClick={handleOpenChat} className={`toolkit-item ${isChatModalOpen ? "bg-red-700" : "hover:bg-red-700/80"}`}>
+    //           <MessageCircle className="h-5 w-6 mb-0.5" />
+    //           <span className="text-xs pt-1">Chat</span>
+    //         </button>
+    //       </div>
+    //     </div>
+    //   </div>
+
+    //   <BookingModal isOpen={isBookingModalOpen} onClose={closeBookingModal} />
+
+    //   <style jsx global>{`
+    //     .toolkit-item {
+    //       display: flex;
+    //       flex-direction: column;
+    //       align-items: center;
+    //       justify-content: center;
+    //       padding: 0.8rem 1rem;
+    //       color: white;
+    //       font-size: 0.75rem;
+    //       line-height: 1rem;
+    //       transition: background-color 0.15s ease-in-out;
+    //     }
+    //     .toolkit-item svg {
+    //       margin-bottom: 0.125rem;
+    //       height: 1.5rem;
+    //       width: 2.75rem;
+    //     }
+    //     .toolkit-item button > svg.lucide-message-circle {
+    //       height: 1.5rem;
+    //       width: 5.5rem;
+    //     }
+    //   `}</style>
+    // </>
   );
 }
