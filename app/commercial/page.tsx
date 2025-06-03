@@ -131,7 +131,7 @@ export default async function CommercialPage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative h-[70vh] min-h-[500px] bg-gray-900 flex items-center">
+      <section className="relative h-screen sm:h-[70vh] min-h-[500px] bg-gray-900 flex items-center pt-20 sm:pt-0">
         <div className="absolute inset-0 z-0">
           <Image src={pageData.heroSection?.backgroundImageUrl || "/images/commercial-hero.png"} alt="Albany commercial buildings" fill className="object-cover opacity-40" priority />
         </div>

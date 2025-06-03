@@ -87,7 +87,7 @@ export default async function AboutPage() {
   return (
     <>
       {/* Header Section */}
-      <section className="bg-white pt-12 pb-6">
+      <section className="bg-white pt-32 sm:pt-12 pb-6">
         <div className="container-custom">
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-4 text-pest-red">{pageData?.header?.title || "About 1 Stop Pest Control"}</h1>

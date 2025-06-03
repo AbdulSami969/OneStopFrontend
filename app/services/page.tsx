@@ -147,7 +147,7 @@ export default async function ServicesPage() {
     <>
       {/* Hero Section */}
       {pageData.heroSection && (
-        <section className="bg-cover bg-center relative py-24 md:py-32" style={{ backgroundImage: pageData.heroSection.backgroundImageUrl ? `url(${pageData.heroSection.backgroundImageUrl})` : "url('/images/residential-hero.png')" }}>
+        <section className="bg-cover bg-center relative pt-32 sm:pt-0 py-24 md:py-32" style={{ backgroundImage: pageData.heroSection.backgroundImageUrl ? `url(${pageData.heroSection.backgroundImageUrl})` : "url('/images/residential-hero.png')" }}>
           <div className="absolute inset-0 bg-black/60"></div>
           <div className="container-custom relative z-10">
             <div className="max-w-4xl mx-auto text-center text-white">

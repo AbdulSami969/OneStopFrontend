@@ -114,7 +114,7 @@ export default async function Service({ params }: { params: { slug: string } }) 
     <>
       {/* Hero Section */}
       <section
-        className="bg-cover bg-center relative py-16 md:py-24"
+        className="bg-cover bg-center relative pt-32 sm:pt-0 py-16 md:py-24"
         style={{
           backgroundImage: service.heroSection.heroImage ? `url(${urlForImage(service.heroSection.heroImage).toString()})` : "url('/images/default-service.png')",
         }}

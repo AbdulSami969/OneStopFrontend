@@ -115,7 +115,7 @@ export default async function ContactPage() {
   return (
     <>
       {/* Header Section */}
-      <section className="bg-white pt-12 pb-6">
+      <section className="bg-white pt-32 sm:pt-12 pb-6">
         <div className="container-custom">
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-4 text-pest-red">{headline}</h1>

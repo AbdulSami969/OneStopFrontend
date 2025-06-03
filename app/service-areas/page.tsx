@@ -114,7 +114,7 @@ export default async function ServiceAreasPage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="bg-cover bg-center relative py-16 md:py-24" style={{ backgroundImage: `url('${heroBackgroundUrl}')` }}>
+      <section className="bg-cover bg-center relative pt-32 sm:pt-0 py-16 md:py-24" style={{ backgroundImage: `url('${heroBackgroundUrl}')` }}>
         <div className="absolute inset-0 bg-black/60"></div>
         <div className="container-custom relative z-10">
           <div className="max-w-3xl mx-auto text-center text-white">

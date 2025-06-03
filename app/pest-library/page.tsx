@@ -138,7 +138,7 @@ export default async function PestLibraryPage() {
   return (
     <>
       {/* Pest Library Header */}
-      <section className="py-16 bg-white border-b border-gray-200">
+      <section className="py-16 bg-white border-b pt-32 sm:pt-0 border-gray-200">
         <div className="container-custom">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">{pageData?.heroSection?.heading || "Pest Library"}</h1>

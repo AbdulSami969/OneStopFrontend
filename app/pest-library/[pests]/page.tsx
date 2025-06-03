@@ -118,7 +118,7 @@ export default async function PestPage({ params }: PestPageParams) {
 
   return (
     <>
-      <section className="bg-cover bg-center relative py-16 md:py-24" style={{ backgroundImage: getHeroBackgroundUrl() }}>
+      <section className="bg-cover bg-center relative pt-32 sm:pt-0 py-16 md:py-24" style={{ backgroundImage: getHeroBackgroundUrl() }}>
         <div className="absolute inset-0 bg-black/70"></div>
         <div className="container-custom relative z-10">
           <div className="max-w-3xl mx-auto text-center text-white">
