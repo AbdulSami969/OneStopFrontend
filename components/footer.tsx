@@ -127,6 +127,11 @@ export default async function Footer() {
                 </Link>
               ))}
             </div>
+            <div className="mt-10">
+              <a className="mt-5" href="https://www.bbb.org/us/ny/rensselaer/profile/pest-control-services/1-stop-pest-control-llc-0041-236026468/#sealclick" target="_blank" rel="nofollow">
+                <img src="https://seal-upstateny.bbb.org/seals/blue-seal-293-61-bbb-236026468.png" alt="1 Stop Pest Control LLC BBB Business Review" />
+              </a>
+            </div>
           </div>
 
           {/* Quick Links */}
