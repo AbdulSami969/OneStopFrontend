@@ -182,7 +182,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
   return (
     <div className="fixed inset-0 z-[100] flex items-end md:justify-end justify-center pointer-events-none md:pr-2 pr-0 rtl:p-0">
       <Toaster position="top-center" reverseOrder={false} />
-      <div className="bg-white shadow-xl w-full md:max-w-sm h-[70vh] max-h-[550px] flex flex-col overflow-hidden pointer-events-auto mb-16 md:mb-20 mb-0 md:mr-0 mr-0 rtl:ml-0 rtl:mr-6 md:rtl:mr-6 md:rounded-lg rounded-t-lg">
+      <div className="bg-white shadow-xl w-full md:max-w-[363px] h-[70vh] max-h-[550px] flex flex-col overflow-hidden pointer-events-auto mb-16 md:mb-20 mb-0 md:mr-0 mr-0 rtl:ml-0 rtl:mr-6 md:rtl:mr-6 md:rounded-lg rounded-t-lg">
         {/* Fixed Header */}
         <div className="flex items-center justify-between p-3 border-b min-h-20 flex-shrink-0">
           {step > 1 && step < 7 ? (
