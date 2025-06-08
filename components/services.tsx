@@ -78,7 +78,7 @@ export default function Services({ data }: ServicesProps = {}) {
     if (title.toLowerCase().includes("prevent")) return Shield;
     return BugOff; // Default icon
   }
-
+  console.log(services);
   return (
     <section className="py-10 md:py-16 bg-gray-light relative">
       <div className="absolute top-0 right-0 opacity-10 pointer-events-none">
@@ -102,7 +102,7 @@ export default function Services({ data }: ServicesProps = {}) {
             const isPrevProgram = service.title === "Preventative Programs";
 
             return (
-              <Link href={service.link} key={`service-${index}`} className="group">
+              <Link href={service.link === "/services/residential-pest-control" ? "services" : service.link === "/services/commercial-pest-control" ? "commercial" : `${service.link}`} key={`service-${index}`} className="group">
                 <Card className="h-full transition-all duration-300 hover:shadow-xl hover:border-pest-red overflow-hidden bg-white">
                   {service.image ? (
                     <div className="relative h-48 md:h-56 w-full overflow-hidden">

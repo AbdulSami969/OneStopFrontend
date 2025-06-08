@@ -167,9 +167,9 @@ export default async function PestLibraryPage() {
             {pests.map((pest) => (
               <Link key={pest.id} href={`${pest.link}`} className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow group">
                 <div className="relative h-64">
-                  <Image src={pest.image || "/placeholder.svg"} alt={pest.name} fill className="object-cover" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" />
+                  <Image src={pest.image || "/placeholder.svg"} alt={pest.name} fill className="object-contain" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" />
                   <div className="absolute top-4 left-4 bg-pest-red p-2 rounded-full">
-                    <Image src={`${pest.icon}`} alt={`${pest.name} icon`} width={24} height={24} className="text-white" />
+                    <Image src={`${pest.icon}`} alt={`${pest.name} icon`} width={24} height={24} className="text-white object-contain" />
                   </div>
                 </div>
                 <div className="p-6">
@@ -222,10 +222,10 @@ export default async function PestLibraryPage() {
               </div>
             </div>
             <div className="relative">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-0">
                 {identificationGalleryImages.slice(0, 4).map((image, index) => (
                   <div key={index} className="relative h-48 rounded-lg overflow-hidden">
-                    <Image src={image} alt={`Pest identification image ${index + 1}`} fill className="object-cover" sizes="(max-width: 768px) 100vw, 25vw" />
+                    <Image src={image} alt={`Pest identification image ${index + 1}`} fill className="object-contain" sizes="(max-width: 768px) 100vw, 25vw" />
                   </div>
                 ))}
               </div>

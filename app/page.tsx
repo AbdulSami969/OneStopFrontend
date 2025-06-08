@@ -11,7 +11,6 @@ import TestimonialsSection from "@/components/testimonials-section";
 export default async function Home() {
   // Fetch data from Sanity
   const homepage = await getHomepage();
-  console.log(homepage);
   return (
     <>
       <Hero data={homepage?.heroSection} key="hero-section" />
