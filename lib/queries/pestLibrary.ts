@@ -2,14 +2,29 @@ import { groq } from "next-sanity";
 
 export const pestLibraryQuery = groq`*[_type == "pestMain"][0]{
   title,
-  heroSection {
-    heading,
-    description,
-    phoneButton {
+   heroSection {
+      heading,
+      subheading,
+      description,
+      "backgroundImageUrl": backgroundImage.asset->url,
+      scheduleButton {
+        text,
+        path
+      },
+      contact_button {
+        text,
+        path
+      }
+    },
+     // Review Banner
+    reviewBanner {
       text,
-      path
-    }
-  },
+      rating,
+      google_review_button {
+        text,
+        external_path
+      }
+    },
   pestGridSection {
     heading,
     description,

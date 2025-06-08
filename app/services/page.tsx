@@ -186,7 +186,7 @@ export default async function ServicesPage() {
               <div className="flex items-center">
                 {pageData.reviewBanner.rating && <RenderStars rating={pageData.reviewBanner.rating} />}
                 {pageData.reviewBanner.google_review_button?.text && pageData.reviewBanner.google_review_button.external_path && (
-                  <Link href={pageData.reviewBanner.google_review_button.external_path} className="ml-2 underline hover:no-underline">
+                  <Link href={pageData.reviewBanner.google_review_button.external_path} target="_blank" className="ml-2 underline hover:no-underline">
                     {pageData.reviewBanner.google_review_button.text}
                   </Link>
                 )}

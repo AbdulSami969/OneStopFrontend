@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Info, ArrowRight, Phone } from "lucide-react";
+import { Star, Shield, Check, Bug, Calendar, Phone, ArrowRight, Home, Info } from "lucide-react";
 import PestIcon from "@/components/pest-icons";
 import { client } from "@/lib/sanity.client";
 import { pestLibraryQuery, pestsQuery } from "@/lib/queries/pestLibrary";
@@ -134,26 +134,73 @@ export default async function PestLibraryPage() {
       tips: ["Fix leaky pipes and faucets", "Use dehumidifiers in damp areas like basements", "Ensure proper drainage around your foundation", "Remove standing water from gutters and around your property"],
     },
   ];
-
+  const RenderStars = ({ rating }: { rating: number }) => {
+    const fullStars = Math.floor(rating);
+    const halfStar = rating % 1 !== 0;
+    const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+    return (
+      <div className="flex">
+        {[...Array(fullStars)].map((_, i) => (
+          <Star key={`full-${i}`} className="h-5 w-5 fill-yellow-400 text-yellow-400" />
+        ))}
+        {halfStar && <Star key="half" className="h-5 w-5 fill-yellow-400 text-yellow-400" />}
+        {[...Array(emptyStars)].map((_, i) => (
+          <Star key={`empty-${i}`} className="h-5 w-5 text-yellow-400" />
+        ))}
+      </div>
+    );
+  };
   return (
     <>
-      {/* Pest Library Header */}
-      <section className="py-16 bg-white border-b pt-32 sm:pt-0 border-gray-200">
-        <div className="container-custom">
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">{pageData?.heroSection?.heading || "Pest Library"}</h1>
-            <p className="text-xl mb-8">{pageData?.heroSection?.description || "Learn about common pests in the Albany Capital Region and how 1 Stop Pest Control can help eliminate them"}</p>
-            <div className="flex justify-center">
-              <Button asChild size="lg" className="bg-pest-red hover:bg-pest-red/90">
-                <Link href={pageData?.heroSection?.phoneButton?.path || "/contact"} className="flex items-center gap-2">
-                  <Phone className="h-5 w-5" />
-                  <span>{pageData?.heroSection?.phoneButton?.text || "Call for Immediate Assistance: 518-728-5589"}</span>
-                </Link>
-              </Button>
+      {/* Hero Section */}
+      {pageData.heroSection && (
+        <section className="bg-cover bg-center relative pt-32 sm:pt-0 py-24 md:py-32" style={{ backgroundImage: pageData.heroSection.backgroundImageUrl ? `url(${pageData.heroSection.backgroundImageUrl})` : "url('/images/residential-hero.png')" }}>
+          <div className="absolute inset-0 bg-black/60"></div>
+          <div className="container-custom relative z-10">
+            <div className="max-w-4xl mx-auto text-center text-white">
+              {pageData.heroSection.heading && <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">{pageData.heroSection.heading}</h1>}
+              {pageData.heroSection.subheading && <p className="text-xl md:text-2xl font-bold mb-4">{pageData.heroSection.subheading}</p>}
+              {pageData.heroSection.description && <p className="text-lg md:text-xl mb-8">{pageData.heroSection.description}</p>}
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                {pageData.heroSection.scheduleButton?.text && pageData.heroSection.scheduleButton.path && (
+                  <Button asChild size="lg" className="bg-pest-red hover:bg-pest-red/90 text-white rounded-full px-8 py-6 text-lg">
+                    <Link href={pageData.heroSection.scheduleButton.path} className="flex items-center gap-2">
+                      <Calendar className="h-5 w-5" />
+                      <span>{pageData.heroSection.scheduleButton.text}</span>
+                    </Link>
+                  </Button>
+                )}
+                {pageData.heroSection.contact_button?.text && pageData.heroSection.contact_button.path && (
+                  <Button asChild variant="outline" size="lg" className="bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white border-white rounded-full px-8 py-6 text-lg">
+                    <Link href={pageData.heroSection.contact_button.path} className="flex items-center gap-2">
+                      <Phone className="h-5 w-5" />
+                      <span>{pageData.heroSection.contact_button.text}</span>
+                    </Link>
+                  </Button>
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+      {/* Review Banner */}
+      {pageData.reviewBanner && (
+        <div className="bg-pest-red text-white py-4">
+          <div className="container-custom">
+            <div className="flex flex-col md:flex-row items-center justify-center gap-2 text-center">
+              {pageData.reviewBanner.text && <span>{pageData.reviewBanner.text}</span>}
+              <div className="flex items-center">
+                {pageData.reviewBanner.rating && <RenderStars rating={pageData.reviewBanner.rating} />}
+                {pageData.reviewBanner.google_review_button?.text && pageData.reviewBanner.google_review_button.external_path && (
+                  <Link href={pageData.reviewBanner.google_review_button.external_path} target="_blank" className="ml-2 underline hover:no-underline">
+                    {pageData.reviewBanner.google_review_button.text}
+                  </Link>
+                )}
+              </div>
             </div>
           </div>
         </div>
-      </section>
+      )}
 
       {/* Pest Grid */}
       <section className="py-12 bg-gray-light">

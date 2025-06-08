@@ -178,7 +178,7 @@ export default async function CommercialPage() {
                   </div>
                 )}
                 {pageData.reviewBanner.google_review_button?.text && pageData.reviewBanner.google_review_button.external_path && (
-                  <Link href={pageData.reviewBanner.google_review_button.external_path} className="text-white underline hover:text-white/90">
+                  <Link href={pageData.reviewBanner.google_review_button.external_path} target="_blank" className="text-white underline hover:text-white/90">
                     {pageData.reviewBanner.google_review_button.text}
                   </Link>
                 )}
