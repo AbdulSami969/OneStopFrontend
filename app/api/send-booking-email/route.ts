@@ -70,7 +70,7 @@ export async function POST(req: Request) {
                       <h2 style="margin:0 0 16px 0;color:#0b2e13;font-weight:600;">Thank you for your booking, ${firstName}!</h2>
                       <p style="margin:0 0 24px 0;line-height:1.5;">We have received your pest control service request and will contact you shortly to confirm your appointment details.</p>
                       <p style="margin:0 0 24px 0;line-height:1.5;">Our team of certified professionals is ready to help you with your ${pestType} issue at your ${propertyType}.</p>
-                      <p style="margin:0 0 24px 0;line-height:1.5;">If you have any immediate questions or need to make changes to your request, please call us at <a href="tel:+1-800-123-4567" style="color:#0b2e13;text-decoration:none;font-weight:bold;">(800) 123-4567</a>.</p>
+                      <p style="margin:0 0 24px 0;line-height:1.5;">If you have any immediate questions or need to make changes to your request, please call us at <a href="tel:+518-728-5589" style="color:#0b2e13;text-decoration:none;font-weight:bold;">(800) 123-4567</a>.</p>
                       <p style="margin:0;line-height:1.5;">Sincerely,<br />The 1 Stop Pest Control Team</p>
                     </td>
                   </tr>

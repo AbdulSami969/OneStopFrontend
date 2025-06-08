@@ -27,7 +27,7 @@ interface FormData {
   selectedTime: string;
 }
 
-const pestTypes = ["Ants", "Bed Bugs", "Cockroaches", "Mosquitos", "Not Sure", "Other", "Rodents", "Termites"];
+const pestTypes = ["Ants", "Bed Bugs", "Cockroaches", "Rodents","Not Sure", "Other", ];
 
 // Updated timeSlots: 10 AM to 9 PM, hourly
 const allAvailableTimes = ["10:00 AM", "11:00 AM", "12:00 PM", "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM", "6:00 PM", "7:00 PM", "8:00 PM", "9:00 PM"];

@@ -82,7 +82,7 @@ export async function POST(req: Request) {
                     <td style="padding:40px 40px 20px 40px;color:#333333;">
                       <h2 style="margin:0 0 16px 0;color:#0b2e13;font-weight:600;">Thank you, ${formData.name}!</h2>
                       <p style="margin:0 0 24px 0;line-height:1.5;">We appreciate you reaching out to 1 Stop Pest Control. Your message is important to us and one of our specialists will get back to you shortly.</p>
-                      <p style="margin:0 0 24px 0;line-height:1.5;">If your request is urgent, please call us at <a href="tel:+1-800-123-4567" style="color:#0b2e13;text-decoration:none;font-weight:bold;">(800) 123-4567</a>.</p>
+                      <p style="margin:0 0 24px 0;line-height:1.5;">If your request is urgent, please call us at <a href="tel:518-728-5589" style="color:#0b2e13;text-decoration:none;font-weight:bold;">(800) 123-4567</a>.</p>
                       <p style="margin:0;line-height:1.5;">Sincerely,<br />The 1 Stop Pest Control Team</p>
                     </td>
                   </tr>
