@@ -18,6 +18,30 @@ export const metadata: Metadata = {
   description: "Premier pest control service in Albany Capital Region. Specializing in heat treatment for bedbugs and offering both residential and commercial pest control services.",
   keywords: "pest control, Albany, bed bugs, heat treatment, residential pest control, commercial pest control, exterminator",
   generator: "v0.dev",
+  authors: [{ name: "Samdev", url: "https://www.samdev.dev" }],
+  creator: "Samdev",
+  publisher: "Samdev",
+  applicationName: "1 Stop Pest Control LLC",
+  openGraph: {
+    title: "1 Stop Pest Control LLC | Albany Capital Region",
+    description: "Premier pest control service in Albany Capital Region. Specializing in heat treatment for bedbugs and offering both residential and commercial pest control services.",
+    url: "https://1stoppestcontrol.com",
+    siteName: "1 Stop Pest Control LLC",
+    images: [
+      {
+        url: "https://1stoppestcontrol.com/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "1 Stop Pest Control LLC",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "1 Stop Pest Control LLC | Albany Capital Region",
+    description: "Premier pest control service in Albany Capital Region. Specializing in heat treatment for bedbugs and offering both residential and commercial pest control services.",
+    images: ["https://1stoppestcontrol.com/og-image.jpg"],
+  },
 };
 
 export default function RootLayout({
@@ -28,6 +52,22 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+      <script
+    type="application/ld+json"
+    dangerouslySetInnerHTML={{
+      __html: JSON.stringify({
+        "@context": "http://schema.org",
+        "@type": "WebSite",
+        "name": "1 Stop Pest Control LLC",
+        "url": "https://www.1stoppestcontrolllc.com",
+        "creator": {
+          "@type": "Person",
+          "name": "Samdev",
+          "url": "https://www.samdev.dev"
+        }
+      }),
+    }}
+  />
         {/* ResizeObserver Polyfill and Error Suppression */}
         <Script id="resize-observer-fix" strategy="beforeInteractive">
           {`

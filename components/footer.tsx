@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Phone, Mail, MapPin, Facebook, Instagram, Twitter, ArrowRight } from "lucide-react";
+import { Phone, Mail, MapPin, Facebook, Instagram, Twitter, ArrowRight, TimerIcon } from "lucide-react";
 import { getFooterData } from "@/lib/queries/footer";
 import { urlForImage } from "@/lib/sanity.image";
 
@@ -190,6 +190,18 @@ export default async function Footer() {
               </li>
               <li className="flex items-start gap-4">
                 <div className="bg-pest-red rounded-full p-2 text-white flex-shrink-0">
+                  <TimerIcon className="h-5 w-5" />
+                </div>
+                <div>
+                  <p className="font-medium text-gray-300">Business Hours</p>
+                  <p className="">
+                    Monday to Saturday, 7:00 AM – 6:00 PM 
+                  </p>
+                  <p>Emergency Services: 24/7</p>
+                </div>
+              </li>
+              <li className="flex items-start gap-4">
+                <div className="bg-pest-red rounded-full p-2 text-white flex-shrink-0">
                   <Mail className="h-5 w-5" />
                 </div>
                 <div>
@@ -230,6 +242,15 @@ export default async function Footer() {
             </div>
           )}
         </div>
+        <div className="hidden">Designed & Developed by{" "}
+      <a
+        href="https://www.samdev.dev"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="underline hover:text-blue-500 text-sm text-gray-400 mb-4 md:mb-0"
+      >
+        Samdev
+      </a></div>
       </div>
     </footer>
   );
